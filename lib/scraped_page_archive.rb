@@ -31,7 +31,7 @@ module ScrapedPageArchive
     def clone_repo_if_missing!
       unless File.directory?(archive_directory)
         warn "Cloning archive repo into /tmp"
-        system("git clone #{github_repo_url} #{archive_directory}")
+        system("git clone #{git_url} #{archive_directory}")
       end
     end
 
@@ -42,6 +42,12 @@ module ScrapedPageArchive
         system("git checkout --orphan #{branch_name}")
         system("git rm --quiet -rf .")
       end
+    end
+
+    def git_url
+      url = URI.parse(github_repo_url)
+      url.password = ENV['SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN']
+      url.to_s
     end
 
     def github_repo_url
