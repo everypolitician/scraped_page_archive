@@ -23,7 +23,7 @@ First require the library:
 require 'scraped_page_archive'
 ```
 
-Then configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens).
+Then configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens). It will need to have the `repo` permission checked.
 
 If you're using the excellent [morph.io](https://morph.io) then you can set the `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` environment variable to your git url:
 
