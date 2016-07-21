@@ -9,6 +9,11 @@ module ScrapedPageArchive
     attr_writer :github_repo_url
 
     def cache_response(url)
+      if github_repo_url.nil?
+        warn "Could not determine git repo for 'scraped_page_archive' to use.\n\n" \
+          "See https://github.com/everypolitician/scraped_page_archive#usage for details."
+        return yield(url)
+      end
       clone_repo_if_missing!
       Dir.chdir(archive_directory) do
         create_or_checkout_archive_branch!
