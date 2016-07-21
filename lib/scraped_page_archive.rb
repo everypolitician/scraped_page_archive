@@ -1,4 +1,6 @@
 require 'singleton'
+require 'fileutils'
+require 'digest/sha1'
 require 'open-uri/cached'
 
 require 'scraped_page_archive/version'
@@ -18,6 +20,11 @@ module ScrapedPageArchive
       clone_repo_if_missing!
       Dir.chdir(archive_directory) do
         create_or_checkout_archive_branch!
+        if refresh_cache?
+          cache_file = Digest::SHA1.hexdigest(url)
+          meta_file = "#{filename}.meta"
+          FileUtils.rm([cache_file, meta_file])
+        end
         OpenURI::Cache.cache_path = archive_directory
         response = yield(url)
         message = "#{response.status.join(' ')} #{url}"
