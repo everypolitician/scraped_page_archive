@@ -58,3 +58,14 @@ module ScrapedPageArchive
     end
   end
 end
+
+module OpenURI
+  class << self
+    alias __open_uri open_uri
+    def open_uri(url, *args)
+      ScrapedPageArchive::GitBranchCache.instance.cache_response(url) do |*open_uri_args|
+        __open_uri(*open_uri_args)
+      end
+    end
+  end
+end
