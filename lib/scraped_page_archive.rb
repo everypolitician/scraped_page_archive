@@ -36,8 +36,8 @@ module ScrapedPageArchive
     end
 
     def create_or_checkout_archive_branch!
-      if system("git rev-parse --verify #{branch_name} > /dev/null 2>&1")
-        system("git checkout --quiet -B #{branch_name}")
+      if system("git rev-parse --verify origin/#{branch_name} > /dev/null 2>&1")
+        system("git checkout --quiet #{branch_name}")
       else
         system("git checkout --orphan #{branch_name}")
         system("git rm --quiet -rf .")
