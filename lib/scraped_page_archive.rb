@@ -1,4 +1,5 @@
 require 'singleton'
+require 'open-uri/cached'
 
 require 'scraped_page_archive/version'
 
