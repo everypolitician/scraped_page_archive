@@ -45,7 +45,12 @@ module ScrapedPageArchive
     end
 
     def github_repo_url
-      @github_repo_url ||= ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL']
+      @github_repo_url ||= (git_remote_get_url_origin || ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'])
+    end
+
+    def git_remote_get_url_origin
+      remote_url = `git remote get-url origin`.chomp
+      remote_url.empty? ? nil : remote_url
     end
 
     # TODO: This should be configurable
