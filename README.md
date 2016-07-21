@@ -1,28 +1,41 @@
 # ScrapedPageArchive
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/scraped_page_archive`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Add this gem to your Ruby scraper and it will automatically override calls to `open-uri`'s `open` method
+and cache the response in a branch within your git repository.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'scraped_page_archive'
+gem 'scraped_page_archive', git: 'https://github.com/everypolitician/scraped_page_archive', branch: 'master'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install scraped_page_archive
-
 ## Usage
 
-TODO: Write usage instructions here
+First require the library:
+
+```ruby
+require 'scraped_page_archive'
+```
+
+Then configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens).
+
+If you're using the excellent [morph.io](https://morph.io) then you can set the `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` environment variable to your git url:
+
+| Name                                  | Value                                                           |
+|---------------------------------------|-----------------------------------------------------------------|
+| `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` | `https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu` |
+
+You can also set this to any value (including another environment variable of your choosing) with the following:
+
+```ruby
+ScrapedPageArchive::GitBranchCache.instance.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
+```
 
 ## Development
 
@@ -32,10 +45,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/scraped_page_archive.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/everypolitician/scraped_page_archive.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
