@@ -4,6 +4,18 @@ require 'open-uri/cached'
 require 'scraped_page_archive/version'
 
 module ScrapedPageArchive
+  class << self
+    attr_reader :archiver
+  end
+
+  def self.archiver=(archiver)
+    @archiver = archiver
+  end
+
+  def self.archive!(url, &block)
+    archiver.archive!(url, &block)
+  end
+
   class GitBranchCache
     include Singleton
 
