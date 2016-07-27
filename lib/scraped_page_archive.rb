@@ -1,5 +1,13 @@
 require 'scraped_page_archive/version'
+require 'vcr'
 require 'vcr/archive'
+
+VCR.configure do |config|
+  config.hook_into :webmock
+  config.cassette_serializers[:vcr_archive] = VCR::Archive::Serializer
+  config.cassette_persisters[:vcr_archive] = VCR::Archive::Persister
+  config.default_cassette_options = { serialize_with: :vcr_archive, persist_with: :vcr_archive, record: :all }
+end
 
 module ScrapedPageArchive
   extend self
