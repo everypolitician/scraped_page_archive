@@ -37,6 +37,25 @@ You can also set this to any value (including another environment variable of yo
 ScrapedPageArchive.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
 ```
 
+Then you can record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
+
+```ruby
+ScrapedPageArchive.record do
+  response = open('http://example.com/')
+  # Use the response...
+end
+```
+
+### Use with open-uri
+
+If you would like to have your http requests automatically recorded when using open-uri do the following:
+
+```ruby
+require 'scraped_page_archive/open-uri'
+response = open('http://example.com/')
+# Use the response...
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

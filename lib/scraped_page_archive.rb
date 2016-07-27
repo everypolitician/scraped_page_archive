@@ -1,6 +1,5 @@
 require 'scraped_page_archive/version'
 require 'vcr/archive'
-require 'open-uri'
 
 module ScrapedPageArchive
   extend self
@@ -33,15 +32,6 @@ module ScrapedPageArchive
     @git_remote_get_url_origin ||= begin
       remote_url = `git remote get-url origin`.chomp
       remote_url.empty? ? nil : remote_url
-    end
-  end
-end
-
-module OpenURI
-  class << self
-    alias __open_uri open_uri
-    def open_uri(*args, &block)
-      ScrapedPageArchive.record { __open_uri(*args, &block) }
     end
   end
 end
