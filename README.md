@@ -34,7 +34,7 @@ If you're using the excellent [morph.io](https://morph.io) then you can set the 
 You can also set this to any value (including another environment variable of your choosing) with the following:
 
 ```ruby
-ScrapedPageArchive::GitBranchCache.instance.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
+ScrapedPageArchive.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
 ```
 
 ## Development
