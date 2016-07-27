@@ -13,7 +13,8 @@ module ScrapedPageArchive
         "See https://github.com/everypolitician/scraped_page_archive#usage for details."
       return
     end
-    VCR.use_cassette(git_url, &block)
+    VCR::Archive.git_repository_url = git_url
+    VCR.use_cassette('', &block)
   end
 
   def git_url
