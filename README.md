@@ -1,4 +1,4 @@
-# ScrapedPageArchive
+# ScrapedPageArchive [![Build Status](https://travis-ci.org/everypolitician/scraped_page_archive.svg?branch=master)](https://travis-ci.org/everypolitician/scraped_page_archive) [![Gem Version](https://badge.fury.io/rb/scraped_page_archive.svg)](https://badge.fury.io/rb/scraped_page_archive)
 
 Add this gem to your Ruby scraper and it will automatically capture http requests
 and cache the response in a branch within your git repository.
