@@ -1,6 +1,6 @@
 # ScrapedPageArchive
 
-Add this gem to your Ruby scraper and it will automatically override calls to `open-uri`'s `open` method
+Add this gem to your Ruby scraper and it will automatically capture http requests
 and cache the response in a branch within your git repository.
 
 ## Installation
