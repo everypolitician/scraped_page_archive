@@ -8,12 +8,16 @@ and cache the response in a branch within your git repository.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'scraped_page_archive', git: 'https://github.com/everypolitician/scraped_page_archive', branch: 'master'
+gem 'scraped_page_archive'
 ```
 
 And then execute:
 
     $ bundle
+
+Or install it yourself as:
+
+    $ gem install scraped_page_archive
 
 ## Usage
 
