@@ -62,6 +62,7 @@ module ScrapedPageArchive
   def git
     @git ||= Git.clone(git_url, tmpdir).tap do |g|
       g.config('user.name', "scraped_page_archive gem #{ScrapedPageArchive::VERSION}")
+      g.config('user.email', "scraped_page_archive-#{ScrapedPageArchive::VERSION}@scrapers.everypolitician.org")
     end
   end
 
