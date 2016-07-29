@@ -79,9 +79,8 @@ module ScrapedPageArchive
   end
 
   def git_remote_get_url_origin
-    @git_remote_get_url_origin ||= begin
-      remote_url = `git remote get-url origin`.chomp
-      remote_url.empty? ? nil : remote_url
-    end
+    remote_url = `git config remote.origin.url`.chomp
+    return nil unless $?.success?
+    remote_url
   end
 end
