@@ -8,6 +8,7 @@ VCR.configure do |config|
   config.cassette_serializers[:vcr_archive] = VCR::Archive::Serializer
   config.cassette_persisters[:vcr_archive] = VCR::Archive::Persister
   config.default_cassette_options = { serialize_with: :vcr_archive, persist_with: :vcr_archive, record: :all }
+  config.allow_http_connections_when_no_cassette = true
 end
 
 module ScrapedPageArchive
