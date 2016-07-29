@@ -60,7 +60,9 @@ module ScrapedPageArchive
   end
 
   def git
-    @git ||= Git.clone(git_url, tmpdir)
+    @git ||= Git.clone(git_url, tmpdir).tap do |g|
+      g.config('user.name', "scraped_page_archive gem #{ScrapedPageArchive::VERSION}")
+    end
   end
 
   def tmpdir
