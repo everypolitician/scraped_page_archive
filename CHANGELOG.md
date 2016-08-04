@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2016-08-04
+
+### Features
+
+- Added support for Capybara Poltergeist driver
+
 ## [0.3.1] - 2016-07-29
 
 ### Fixes
