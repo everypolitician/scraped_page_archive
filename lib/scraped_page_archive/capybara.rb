@@ -10,21 +10,23 @@ module Capybara::Poltergeist
       Digest::SHA1.hexdigest url.gsub(/_piref[\d_]+\./, '')
     end
 
-    def get_path(url)
-      base_dir = VCR::Archive::Persister.storage_location
-      page_url = URI(page.current_url)
-      page_url = URI(page.current_url)
-      dir = File.join(base_dir, page_url.host)
+    def base_dir_for_url(url)
+      dir = File.join(VCR::Archive::Persister.storage_location, URI(url).host)
       FileUtils.mkdir_p(dir)
-      sha = sha_url(page_url.to_s)
-      File.join(dir, sha)
+      dir
     end
 
-    def get_details
+    def get_paths(url)
+      base_path = File.join(base_dir_for_url(url), sha_url(url))
+
+      ['.html', '.yml'].map { |x| base_path + x }
+    end
+
+    def get_details(url)
       {
         'request' => {
-          'method' => 'get',
-          'uri' => page.current_url.to_s
+          'method' => 'get', # assume this as no way to access it
+          'uri' => url
         },
         'response' => {
           'status' => {
@@ -36,22 +38,21 @@ module Capybara::Poltergeist
       }
     end
 
+    def save_request(url)
+      html_path, yaml_path = get_paths(url)
+
+      File.open(html_path,"w") do |f|
+        f.write(page.html)
+      end
+      File.open(yaml_path,"w") do |f|
+        f.write(YAML.dump(get_details(url)))
+      end
+    end
+
     def visit(url)
       ScrapedPageArchive.record do
         __visit(url)
-
-        base_path = get_path(url)
-        html_path = base_path + '.html'
-        yaml_path = base_path + '.yml'
-
-        details = get_details()
-
-        File.open(html_path,"w") do |f|
-          f.write(page.html)
-        end
-        File.open(yaml_path,"w") do |f|
-          f.write(YAML.dump(details))
-        end
+        save_request(page.current_url.to_s)
       end
     end
   end
