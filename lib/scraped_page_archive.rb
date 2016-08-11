@@ -47,7 +47,7 @@ module ScrapedPageArchive
       interaction = git.chdir { YAML.load_file(f) }
       message = "#{interaction['response']['status'].values_at('code', 'message').join(' ')} #{interaction['request']['uri']}"
       git.add([f, f.sub(/\.yml$/, '.html')])
-      git.commit(message) rescue binding.pry
+      git.commit(message)
     end
     # FIXME: Auto-pushing should be optional if the user wants to manually do it at the end.
     git.push('origin', branch_name)
