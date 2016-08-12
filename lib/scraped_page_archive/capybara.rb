@@ -7,7 +7,7 @@ module Capybara::Poltergeist
     alias __visit visit
 
     def sha_url(url)
-      Digest::SHA1.hexdigest url.gsub(/_piref[\d_]+\./, '')
+      Digest::SHA1.hexdigest url
     end
 
     def base_dir_for_url(url)
