@@ -14,10 +14,6 @@ end
 class ScrapedPageArchive
   attr_writer :github_repo_url
 
-  def self.use_archive!
-    VCR.configuration.default_cassette_options[:record] = :once
-  end
-
   def self.record(*args, &block)
     new.record(*args, &block)
   end
@@ -58,6 +54,15 @@ class ScrapedPageArchive
     # FIXME: Auto-pushing should be optional if the user wants to manually do it at the end.
     git.push('origin', branch_name)
     ret
+  end
+
+  def open_from_archive(url, *args)
+    prev_record_setting = VCR.configuration.default_cassette_options[:record]
+    VCR.configuration.default_cassette_options[:record] = :once
+    VCR.use_cassette('') do
+      open(url, *args)
+    end
+    VCR.configuration.default_cassette_options[:record] = prev_record_setting
   end
 
   # TODO: This should be configurable.
