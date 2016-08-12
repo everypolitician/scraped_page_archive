@@ -11,10 +11,12 @@ VCR.configure do |config|
   config.allow_http_connections_when_no_cassette = true
 end
 
-module ScrapedPageArchive
-  extend self
-
+class ScrapedPageArchive
   attr_writer :github_repo_url
+
+  def self.record(*args, &block)
+    new.record(*args, &block)
+  end
 
   def record(&block)
     if github_repo_url.nil?
