@@ -14,6 +14,10 @@ end
 class ScrapedPageArchive
   attr_writer :github_repo_url
 
+  def self.use_archive!
+    VCR.configuration.default_cassette_options[:record] = :once
+  end
+
   def self.record(*args, &block)
     new.record(*args, &block)
   end
