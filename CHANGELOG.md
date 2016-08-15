@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Features
 
 - Added support for Capybara Poltergeist driver
+- You can now use the `ScrapedPageArchive#open_from_archive` method to retrieve a page from the archive.
 
 ## [0.3.1] - 2016-07-29
 
