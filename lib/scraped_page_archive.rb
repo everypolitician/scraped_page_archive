@@ -81,7 +81,7 @@ class ScrapedPageArchive
   end
 
   def github_repo_url
-    @github_repo_url ||= (git_remote_get_url_origin || ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'])
+    @github_repo_url ||= (ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] || git_remote_get_url_origin)
   end
 
   def git_remote_get_url_origin
