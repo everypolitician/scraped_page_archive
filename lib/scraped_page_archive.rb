@@ -63,46 +63,12 @@ class ScrapedPageArchive
   end
 
   def response_from(meta, response_body)
-    response = StringIO.new(response_body)
-    headers = Hash[meta['response']['headers'].map { |k, v| [k.downcase, v] }]
-    response.instance_variable_set(:"@meta", Hash[headers.map { |k, v| [k, v.join(',')] }])
-    response.instance_variable_set(:"@metas", headers)
-    response.instance_variable_set(:"@base_uri", meta['request']['uri'])
-    response.instance_variable_set(:"@status", meta['response']['status'].values.map(&:to_s))
-
-    def response.meta
-      @meta
+    StringIO.new(response_body).tap do |response|
+      OpenURI::Meta.init(response)
+      meta['response']['headers'].each { |k, v| response.meta_add_field(k, v) }
+      response.status = meta['response']['status'].values.map(&:to_s)
+      response.base_uri = URI.parse(meta['request']['uri'])
     end
-
-    def response.metas
-      @metas
-    end
-
-    def response.base_uri
-      URI.parse(@base_uri.to_s)
-    end
-
-    def response.content_type
-      @meta['content-type']
-    end
-
-    def response.charset
-      @meta['charset']
-    end
-
-    def response.content_encoding
-      @meta['content-encoding']
-    end
-
-    def response.last_modified
-      @meta['last-modified']
-    end
-
-    def response.status
-      @status
-    end
-
-    response
   end
 
   # TODO: This should be configurable.
