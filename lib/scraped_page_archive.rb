@@ -12,6 +12,8 @@ VCR.configure do |config|
 end
 
 class ScrapedPageArchive
+  class Error < StandardError; end
+
   attr_writer :github_repo_url
 
   def self.record(*args, &block)
@@ -45,12 +47,62 @@ class ScrapedPageArchive
   end
 
   def open_from_archive(url, *args)
-    prev_record_setting = VCR.configuration.default_cassette_options[:record]
-    VCR.configuration.default_cassette_options[:record] = :once
-    VCR.use_cassette('') do
-      open(url, *args)
+    git.chdir do
+      filename = filename_from_url(url.to_s)
+      meta = YAML.load_file(filename + '.yml') if File.exist?(filename + '.yml')
+      response_body = File.read(filename + '.html') if File.exist?(filename + '.html')
+      unless meta && response_body
+        fail Error, "No archived copy of #{url} found."
+      end
+      response_from(meta, response_body)
     end
-    VCR.configuration.default_cassette_options[:record] = prev_record_setting
+  end
+
+  def filename_from_url(url)
+    File.join(URI.parse(url).host, Digest::SHA1.hexdigest(url))
+  end
+
+  def response_from(meta, response_body)
+    response = StringIO.new(response_body)
+    headers = Hash[meta['response']['headers'].map { |k, v| [k.downcase, v] }]
+    response.instance_variable_set(:"@meta", Hash[headers.map { |k, v| [k, v.join(',')] }])
+    response.instance_variable_set(:"@metas", headers)
+    response.instance_variable_set(:"@base_uri", meta['request']['uri'])
+    response.instance_variable_set(:"@status", meta['response']['status'].values.map(&:to_s))
+
+    def response.meta
+      @meta
+    end
+
+    def response.metas
+      @metas
+    end
+
+    def response.base_uri
+      URI.parse(@base_uri.to_s)
+    end
+
+    def response.content_type
+      @meta['content-type']
+    end
+
+    def response.charset
+      @meta['charset']
+    end
+
+    def response.content_encoding
+      @meta['content-encoding']
+    end
+
+    def response.last_modified
+      @meta['last-modified']
+    end
+
+    def response.status
+      @status
+    end
+
+    response
   end
 
   # TODO: This should be configurable.
