@@ -12,6 +12,8 @@ VCR.configure do |config|
 end
 
 class ScrapedPageArchive
+  class Error < StandardError; end
+
   attr_writer :github_repo_url
 
   def self.record(*args, &block)
@@ -23,18 +25,6 @@ class ScrapedPageArchive
       warn "Could not determine git repo for 'scraped_page_archive' to use.\n\n" \
         "See https://github.com/everypolitician/scraped_page_archive#usage for details."
       return block.call
-    end
-    VCR::Archive::Persister.storage_location = git.dir.path
-    if git.branches[branch_name] || git.branches["origin/#{branch_name}"]
-      git.checkout(branch_name)
-    else
-      git.chdir do
-        # FIXME: It's not currently possible to create an orphan branch with ruby-git
-        # @see https://github.com/schacon/ruby-git/pull/140
-        system("git checkout --orphan #{branch_name}")
-        system("git rm --quiet -rf .")
-      end
-      git.commit("Initial commit", allow_empty: true)
     end
     ret = VCR.use_cassette('', &block)
 
@@ -56,6 +46,31 @@ class ScrapedPageArchive
     ret
   end
 
+  def open_from_archive(url, *args)
+    git.chdir do
+      filename = filename_from_url(url.to_s)
+      meta = YAML.load_file(filename + '.yml') if File.exist?(filename + '.yml')
+      response_body = File.read(filename + '.html') if File.exist?(filename + '.html')
+      unless meta && response_body
+        fail Error, "No archived copy of #{url} found."
+      end
+      response_from(meta, response_body)
+    end
+  end
+
+  def filename_from_url(url)
+    File.join(URI.parse(url).host, Digest::SHA1.hexdigest(url))
+  end
+
+  def response_from(meta, response_body)
+    StringIO.new(response_body).tap do |response|
+      OpenURI::Meta.init(response)
+      meta['response']['headers'].each { |k, v| response.meta_add_field(k, v) }
+      response.status = meta['response']['status'].values.map(&:to_s)
+      response.base_uri = URI.parse(meta['request']['uri'])
+    end
+  end
+
   # TODO: This should be configurable.
   def branch_name
     @branch_name ||= 'scraped-pages-archive'
@@ -65,6 +80,18 @@ class ScrapedPageArchive
     @git ||= Git.clone(git_url, tmpdir).tap do |g|
       g.config('user.name', "scraped_page_archive gem #{ScrapedPageArchive::VERSION}")
       g.config('user.email', "scraped_page_archive-#{ScrapedPageArchive::VERSION}@scrapers.everypolitician.org")
+      VCR::Archive::Persister.storage_location = g.dir.path
+      if g.branches[branch_name] || g.branches["origin/#{branch_name}"]
+        g.checkout(branch_name)
+      else
+        g.chdir do
+          # FIXME: It's not currently possible to create an orphan branch with ruby-git
+          # @see https://github.com/schacon/ruby-git/pull/140
+          system("git checkout --orphan #{branch_name}")
+          system("git rm --quiet -rf .")
+        end
+        g.commit("Initial commit", allow_empty: true)
+      end
     end
   end
 
