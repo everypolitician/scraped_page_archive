@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.1] - 2016-08-15
+
+### Fixes
+
+- Fix for Ruby 2.0.0 to ensure we work with the older open-uri implementation, which expects all header values to be strings. [#29](https://github.com/everypolitician/scraped_page_archive/pull/29).
+
 ## [0.4.0] - 2016-08-04
 
 ### Features
