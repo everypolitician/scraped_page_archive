@@ -26,6 +26,7 @@ class ScrapedPageArchive
         "See https://github.com/everypolitician/scraped_page_archive#usage for details."
       return block.call
     end
+    VCR::Archive::Persister.storage_location = g.dir.path
     ret = VCR.use_cassette('', &block)
 
     # NOTE: This is a workaround for a ruby-git bug.
@@ -80,7 +81,6 @@ class ScrapedPageArchive
     @git ||= Git.clone(git_url, tmpdir).tap do |g|
       g.config('user.name', "scraped_page_archive gem #{ScrapedPageArchive::VERSION}")
       g.config('user.email', "scraped_page_archive-#{ScrapedPageArchive::VERSION}@scrapers.everypolitician.org")
-      VCR::Archive::Persister.storage_location = g.dir.path
       if g.branches[branch_name] || g.branches["origin/#{branch_name}"]
         g.checkout(branch_name)
       else
