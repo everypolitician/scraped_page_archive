@@ -23,7 +23,6 @@ module Capybara::Poltergeist
     end
 
     def get_details(url)
-      status_code = page.status_code
       {
         'request' => {
           'method' => 'get', # assume this as no way to access it
@@ -34,7 +33,7 @@ module Capybara::Poltergeist
             'message' => status_code == 200 ? 'OK' : 'NOT OK',
             'code' => status_code
           },
-          'date' => [ page.response_headers['Date'] ]
+          'date' => [ response_headers['Date'] ]
         }
       }
     end
@@ -55,9 +54,8 @@ module Capybara::Poltergeist
       # we skip these methods because they are called a lot, don't cause the page
       # to change and having record round them slows things down quite a bit.
       return result if ['tag_name', 'visible', 'property', 'find', 'body', 'set_js_errors', 'current_url', 'status_code', 'response_headers'].include?(name)
-      current_url = page.current_url.to_s
       ScrapedPageArchive.record do
-        save_request(page.html, get_details(current_url), current_url)
+        save_request(body, get_details(current_url), current_url)
       end
       result
     end
