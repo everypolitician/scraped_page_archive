@@ -26,7 +26,7 @@ class ScrapedPageArchive
         "See https://github.com/everypolitician/scraped_page_archive#usage for details."
       return block.call
     end
-    VCR::Archive::Persister.storage_location = g.dir.path
+    VCR::Archive::Persister.storage_location = git.dir.path
     ret = VCR.use_cassette('', &block)
 
     # NOTE: This is a workaround for a ruby-git bug.
