@@ -21,13 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-First require the library:
-
-```ruby
-require 'scraped_page_archive'
-```
-
-Then configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens). It will need to have the `repo` permission checked.
+First configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens). It will need to have the `repo` permission checked.
 
 If you're using the excellent [morph.io](https://morph.io) then you can set the `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` environment variable to your git url:
 
@@ -39,15 +33,6 @@ You can also set this to any value (including another environment variable of yo
 
 ```ruby
 ScrapedPageArchive.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
-```
-
-Then you can record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
-
-```ruby
-ScrapedPageArchive.record do
-  response = open('http://example.com/')
-  # Use the response...
-end
 ```
 
 ### Use with open-uri
@@ -72,6 +57,18 @@ visit('http://example.com/')
 
 It should be possible to adapt this to work with other Capybara drivers
 fairly easily.
+
+### Use with ScrapedPageArchive.record
+
+If you are not using open-uri or Capybara, you can record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
+
+```ruby
+require 'scraped_page_archive'
+ScrapedPageArchive.record do
+  response = open('http://example.com/')
+  # Use the response...
+end
+```
 
 ## Development
 
