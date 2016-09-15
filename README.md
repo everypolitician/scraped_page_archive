@@ -19,13 +19,7 @@ Or install it yourself as:
 
     $ gem install scraped_page_archive
 
-## How it works
-
-This gem clones the GitHub repository where the app using the gem lives. Then it  creates an orphan branch named `'scraped-pages-archive'` in GitHub and it commits to it on behalf of `scraped_page_archive gem CURRENT-VERSION`, storing the requests/responses made by the app.
-
-
 ## Usage
-
 
 ### Running locally
 
