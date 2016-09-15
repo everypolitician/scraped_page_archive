@@ -25,13 +25,18 @@ Or install it yourself as:
 
 #### Use with open-uri
 
-If you would like to have your http requests automatically recorded when using open-uri and running your app locally, do the following:
+If you’re running a scraper locally, and the library can auto-detect
+what repo it’s in, and find your credentials, all you need to do for an
+`open-uri` based scraper is add a `require` line:
 
 ```ruby
 require 'scraped_page_archive/open-uri'
 response = open('http://example.com/')
 # Use the response...
 ```
+
+As your scraper fetches any page it will also commit a copy of the
+response (and the headers), into a `scraped-pages-archive` branch.
 
 ### Running somewhere else
 
