@@ -38,34 +38,38 @@ response = open('http://example.com/')
 As your scraper fetches any page it will also commit a copy of the
 response (and the headers), into a `scraped-pages-archive` branch.
 
-### Running somewhere else
+### Running on other platforms
 
-If you are not running your app locally, then you need some extra configuration, like the url to your repo and an environment variable to set a GitHub access token. This is because, as opposed to running it locally, the gem won't know what repo it's running within, and it also won't have credentials to write to the repo.
+If you are not running your app locally, or it can’t auto-detect the
+information it needs to be able to do the archiving, then you need to
+provide some extra configuration — specifically the url to your repo and
+a GitHub access token.
 
-#### Use with third party platforms
+[Generate a GitHub access token here](https://github.com/settings/tokens):
+it will need to have the `repo` permission checked. Then combine it with
+the details of your repo to produce a setting in the form:
 
-If you are using a platform to run your app (for example, Heroku), that needs an explicit url to your app, you can set it to be the URL of the Github repo you're going to write to, together with the GitHub token, using the following:
 
 ```ruby
-require 'scraped_page_archive'
-ScrapedPageArchive.github_repo_url = 'https://YOUR_GITHUB_TOKEN@github.com/tmtmtmtm/estonia-riigikogu'
-# or ScrapedPageArchive.github_repo_url = ENV['FOO']
+REPO = 'https://YOUR_GITHUB_TOKEN@github.com/everypolitician-scrapers/kenya-mzalendo'
+ScrapedPageArchive.github_repo_url = REPO
 ```
 
-You can [generate a GitHub access token here](https://github.com/settings/tokens). It will  need to have the `repo` permission checked.
+(Though, obviously, you’ll want your own scraper details there rather than
+`everypolitician-scrapers/kenya-mzalendo`!)
 
-> Remember not to share your GitHub access token. Don't include it in your code, especially if it lives in a public repo.
-
+IMPORTANT: Remember not to share your GitHub access token. Don’t include
+it in your code, especially if it lives in a public repo. Normal usage
+would be to set this from an environment variable.
 
 #### Use with Morph
 
-If you're using the excellent [morph.io](https://morph.io), which also requires an explicit url, just set an environment variable there with the url to your repo and the GitHub token. Then you can set the `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` environment variable to your git url:
-
-| Name                                  | Value                                                           |
-|---------------------------------------|-----------------------------------------------------------------|
-| `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` | `https://YOUR_GITHUB_TOKEN@github.com/tmtmtmtm/estonia-riigikogu` |
-
-Finally, require the gem and use it. For example, if you are using `open-uri`, check out the previous section.
+If you’re using the excellent [morph.io](https://morph.io), you can set
+your repo URL configuration in the "Secret environment variables"
+section of the scraper’s Settings page. We automatically check if
+`MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` is set — there’s no need to
+explicitly set it using `ScrapedPageArchive.github_repo_url` in this
+case.
 
 
 ### More complex scenarios
