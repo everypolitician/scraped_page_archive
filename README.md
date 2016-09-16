@@ -21,38 +21,13 @@ Or install it yourself as:
 
 ## Usage
 
-First require the library:
+### Running locally
 
-```ruby
-require 'scraped_page_archive'
-```
+#### Use with open-uri
 
-Then configure the github url to clone. This will need to have a GitHub token embedded in it, you can [generate a new one here](https://github.com/settings/tokens). It will need to have the `repo` permission checked.
-
-If you're using the excellent [morph.io](https://morph.io) then you can set the `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` environment variable to your git url:
-
-| Name                                  | Value                                                           |
-|---------------------------------------|-----------------------------------------------------------------|
-| `MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` | `https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu` |
-
-You can also set this to any value (including another environment variable of your choosing) with the following:
-
-```ruby
-ScrapedPageArchive.github_repo_url = 'https://githubtokenhere@github.com/tmtmtmtm/estonia-riigikogu'
-```
-
-Then you can record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
-
-```ruby
-ScrapedPageArchive.record do
-  response = open('http://example.com/')
-  # Use the response...
-end
-```
-
-### Use with open-uri
-
-If you would like to have your http requests automatically recorded when using open-uri do the following:
+If you’re running a scraper locally, and the library can auto-detect
+what repo it’s in, and find your credentials, all you need to do for an
+`open-uri` based scraper is add a `require` line:
 
 ```ruby
 require 'scraped_page_archive/open-uri'
@@ -60,7 +35,46 @@ response = open('http://example.com/')
 # Use the response...
 ```
 
-### Use with the Capybara Poltergeist driver
+As your scraper fetches any page it will also commit a copy of the
+response (and the headers), into a `scraped-pages-archive` branch.
+
+### Running on other platforms
+
+If you are not running your app locally, or it can’t auto-detect the
+information it needs to be able to do the archiving, then you need to
+provide some extra configuration — specifically the url to your repo and
+a GitHub access token.
+
+[Generate a GitHub access token here](https://github.com/settings/tokens):
+it will need to have the `repo` permission checked. Then combine it with
+the details of your repo to produce a setting in the form:
+
+
+```ruby
+REPO = 'https://YOUR_GITHUB_TOKEN@github.com/everypolitician-scrapers/kenya-mzalendo'
+ScrapedPageArchive.github_repo_url = REPO
+```
+
+(Though, obviously, you’ll want your own scraper details there rather than
+`everypolitician-scrapers/kenya-mzalendo`!)
+
+IMPORTANT: Remember not to share your GitHub access token. Don’t include
+it in your code, especially if it lives in a public repo. Normal usage
+would be to set this from an environment variable.
+
+#### Use with Morph
+
+If you’re using the excellent [morph.io](https://morph.io), you can set
+your repo URL configuration in the "Secret environment variables"
+section of the scraper’s Settings page. We automatically check if
+`MORPH_SCRAPER_CACHE_GITHUB_REPO_URL` is set — there’s no need to
+explicitly set it using `ScrapedPageArchive.github_repo_url` in this
+case.
+
+
+### More complex scenarios
+
+#### Use with the Capybara Poltergeist driver
 
 If you would like to have your http requests automatically recorded when using the Poltergeist driver in Capybara do the following:
 
@@ -72,6 +86,18 @@ visit('http://example.com/')
 
 It should be possible to adapt this to work with other Capybara drivers
 fairly easily.
+
+#### Use with `ScrapedPageArchive.record`
+
+You can have complete control and record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
+
+```ruby
+require 'scraped_page_archive'
+ScrapedPageArchive.record do
+  response = open('http://example.com/')
+  # Use the response...
+end
+```
 
 ## Development
 
@@ -88,4 +114,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/everyp
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT)
