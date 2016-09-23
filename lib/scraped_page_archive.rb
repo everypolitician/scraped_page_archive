@@ -15,6 +15,7 @@ class ScrapedPageArchive
   class Error < StandardError; end
 
   attr_writer :github_repo_url
+  attr_writer :git
 
   def self.record(*args, &block)
     new.record(*args, &block)
@@ -45,6 +46,12 @@ class ScrapedPageArchive
     # FIXME: Auto-pushing should be optional if the user wants to manually do it at the end.
     git.push('origin', branch_name)
     ret
+  rescue Git::GitExecuteError => error
+    if ENV['SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN']
+      raise Git::GitExecuteError, error.message.gsub(ENV['SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN'], '[redacted]')
+    else
+      raise
+    end
   end
 
   def open_from_archive(url, *args)
