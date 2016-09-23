@@ -6,7 +6,7 @@ describe ScrapedPageArchive do
   end
 
   describe '#git_remote_get_url_origin' do
-    subject { ScrapedPageArchive.new }
+    subject { ScrapedPageArchive::GitStorage.new }
 
     describe 'in a git repo' do
       it 'returns the origin url of a git repo' do
