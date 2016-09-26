@@ -2,6 +2,7 @@ require 'scraped_page_archive/version'
 require 'vcr'
 require 'git'
 require 'vcr/archive'
+require 'English'
 
 VCR.configure do |config|
   config.hook_into :webmock
@@ -23,8 +24,8 @@ class ScrapedPageArchive
   def record(&block)
     if github_repo_url.nil?
       warn "Could not determine git repo for 'scraped_page_archive' to use.\n\n" \
-        "See https://github.com/everypolitician/scraped_page_archive#usage for details."
-      return block.call
+        'See https://github.com/everypolitician/scraped_page_archive#usage for details.'
+      return yield
     end
     VCR::Archive::Persister.storage_location = git.dir.path
     ret = VCR.use_cassette('', &block)
@@ -36,7 +37,7 @@ class ScrapedPageArchive
     files = (git.status.changed.keys + git.status.untracked.keys)
     return ret unless files.any?
     # For each interaction, commit the yml and html along with the correct commit message.
-    files.find_all { |f| f.end_with?('.yml') }.each do |f|
+    files.select { |f| f.end_with?('.yml') }.each do |f|
       interaction = git.chdir { YAML.load_file(f) }
       message = "#{interaction['response']['status'].values_at('code', 'message').join(' ')} #{interaction['request']['uri']}"
       git.add([f, f.sub(/\.yml$/, '.html')])
@@ -47,7 +48,7 @@ class ScrapedPageArchive
     ret
   end
 
-  def open_from_archive(url, *args)
+  def open_from_archive(url)
     git.chdir do
       filename = filename_from_url(url.to_s)
       meta = YAML.load_file(filename + '.yml') if File.exist?(filename + '.yml')
@@ -88,9 +89,9 @@ class ScrapedPageArchive
           # FIXME: It's not currently possible to create an orphan branch with ruby-git
           # @see https://github.com/schacon/ruby-git/pull/140
           system("git checkout --orphan #{branch_name}")
-          system("git rm --quiet -rf .")
+          system('git rm --quiet -rf .')
         end
-        g.commit("Initial commit", allow_empty: true)
+        g.commit('Initial commit', allow_empty: true)
       end
     end
   end
@@ -113,7 +114,7 @@ class ScrapedPageArchive
 
   def git_remote_get_url_origin
     remote_url = `git config remote.origin.url`.chomp
-    return nil unless $?.success?
+    return nil unless $CHILD_STATUS.success?
     remote_url
   end
 end

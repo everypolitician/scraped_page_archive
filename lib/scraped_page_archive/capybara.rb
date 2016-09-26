@@ -24,27 +24,27 @@ module Capybara::Poltergeist
 
     def get_details(url)
       {
-        'request' => {
+        'request'  => {
           'method' => 'get', # assume this as no way to access it
-          'uri' => url
+          'uri'    => url,
         },
         'response' => {
           'status' => {
             'message' => status_code == 200 ? 'OK' : 'NOT OK',
-            'code' => status_code
+            'code'    => status_code,
           },
-          'date' => [ response_headers['Date'] ]
-        }
+          'date'   => [response_headers['Date']],
+        },
       }
     end
 
     def save_request(html, details, url)
       html_path, yaml_path = get_paths(url)
 
-      File.open(html_path,"w") do |f|
+      File.open(html_path, 'w') do |f|
         f.write(html)
       end
-      File.open(yaml_path,"w") do |f|
+      File.open(yaml_path, 'w') do |f|
         f.write(YAML.dump(details))
       end
     end
@@ -53,7 +53,7 @@ module Capybara::Poltergeist
       result = __command(name, *args)
       # we skip these methods because they are called a lot, don't cause the page
       # to change and having record round them slows things down quite a bit.
-      return result if ['tag_name', 'visible', 'property', 'find', 'body', 'set_js_errors', 'current_url', 'status_code', 'response_headers'].include?(name)
+      return result if %w(tag_name visible property find body set_js_errors current_url status_code response_headers).include?(name)
       ScrapedPageArchive.record do
         save_request(body, get_details(current_url), current_url)
       end
