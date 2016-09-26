@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['chrismytton@gmail.com']
 
   spec.summary       = 'Archives a copy of scraped web pages into a git branch'
-  spec.homepage      = "https://github.com/everypolitician/scraped_page_archive"
+  spec.homepage      = 'https://github.com/everypolitician/scraped_page_archive'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
