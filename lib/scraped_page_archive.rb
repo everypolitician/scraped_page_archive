@@ -48,7 +48,7 @@ class ScrapedPageArchive
     ret
   end
 
-  def open_from_archive(url, *_args)
+  def open_from_archive(url)
     git.chdir do
       filename = filename_from_url(url.to_s)
       meta = YAML.load_file(filename + '.yml') if File.exist?(filename + '.yml')
