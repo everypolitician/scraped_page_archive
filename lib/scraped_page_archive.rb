@@ -30,14 +30,14 @@ class ScrapedPageArchive
         'See https://github.com/everypolitician/scraped_page_archive#usage for details.'
       return yield
     end
-    VCR::Archive::Persister.storage_location = storage.git.dir.path
+    VCR::Archive::Persister.storage_location = storage.path
     ret = VCR.use_cassette('', &block)
     storage.save
     ret
   end
 
   def open_from_archive(url)
-    storage.git.chdir do
+    storage.chdir do
       filename = filename_from_url(url.to_s)
       meta = YAML.load_file(filename + '.yml') if File.exist?(filename + '.yml')
       response_body = File.read(filename + '.html') if File.exist?(filename + '.html')

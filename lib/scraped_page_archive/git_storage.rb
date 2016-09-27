@@ -48,8 +48,16 @@ class ScrapedPageArchive
       end
     end
 
+    def path
+      git.dir.path
+    end
+
     def tmpdir
       @tmpdir ||= Dir.mktmpdir
+    end
+
+    def chdir(&block)
+      git.chdir(&block)
     end
 
     def git_url
