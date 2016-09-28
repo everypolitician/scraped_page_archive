@@ -13,6 +13,14 @@ class ScrapedPageArchive
       )
     end
 
+    def path
+      git.dir.path
+    end
+
+    def chdir(&block)
+      git.chdir(&block)
+    end
+
     # FIXME: This should be refactored so it doesn't have as much knowledge about
     # the locations of files on the filesystem.
     def save
@@ -32,6 +40,8 @@ class ScrapedPageArchive
       # FIXME: Auto-pushing should be optional if the user wants to manually do it at the end.
       git.push('origin', branch_name)
     end
+
+    private
 
     # TODO: This should be configurable.
     def branch_name
@@ -56,16 +66,8 @@ class ScrapedPageArchive
       end
     end
 
-    def path
-      git.dir.path
-    end
-
     def tmpdir
       @tmpdir ||= Dir.mktmpdir
-    end
-
-    def chdir(&block)
-      git.chdir(&block)
     end
 
     def git_url

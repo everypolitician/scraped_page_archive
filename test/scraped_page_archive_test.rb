@@ -14,14 +14,14 @@ describe ScrapedPageArchive do
           remote_url = 'https://git.example.org/foo.git'
           `git init`
           `git remote add origin #{remote_url}`
-          assert_equal remote_url, subject.git_remote_get_url_origin
+          assert_equal remote_url, subject.github_repo_url
         end
       end
 
       it 'returns nil if there is no origin remote' do
         with_tmp_dir do
           `git init`
-          assert_nil subject.git_remote_get_url_origin
+          assert_nil subject.github_repo_url
         end
       end
     end
@@ -29,7 +29,7 @@ describe ScrapedPageArchive do
     describe 'no git repo' do
       it 'returns nil' do
         with_tmp_dir do
-          assert_nil subject.git_remote_get_url_origin
+          assert_nil subject.github_repo_url
         end
       end
     end
