@@ -3,7 +3,15 @@ require 'English'
 
 class ScrapedPageArchive
   class GitStorage
-    attr_writer :github_repo_url
+    attr_reader :github_repo_url
+
+    def initialize(github_repo_url = nil)
+      @github_repo_url = (
+        github_repo_url ||
+        ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] ||
+        git_remote_get_url_origin
+      )
+    end
 
     # FIXME: This should be refactored so it doesn't have as much knowledge about
     # the locations of files on the filesystem.
@@ -66,10 +74,6 @@ class ScrapedPageArchive
         url.password = ENV['SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN']
         url.to_s
       end
-    end
-
-    def github_repo_url
-      @github_repo_url ||= (ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] || git_remote_get_url_origin)
     end
 
     def git_remote_get_url_origin
