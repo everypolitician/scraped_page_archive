@@ -52,7 +52,9 @@ the details of your repo to produce a setting in the form:
 
 ```ruby
 REPO = 'https://YOUR_GITHUB_TOKEN@github.com/everypolitician-scrapers/kenya-mzalendo'
-ScrapedPageArchive.github_repo_url = REPO
+storage = ScrapedPageArchive::GitStorage.new(REPO)
+archive = ScrapedPageArchive.new(storage)
+archive.record { open('http://example.com/') }
 ```
 
 (Though, obviously, you’ll want your own scraper details there rather than
