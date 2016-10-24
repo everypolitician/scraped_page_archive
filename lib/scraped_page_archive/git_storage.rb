@@ -29,7 +29,7 @@ class ScrapedPageArchive
       git.status.changed.each { git.diff.entries }
 
       files = (git.status.changed.keys + git.status.untracked.keys)
-      return ret unless files.any?
+      return unless files.any?
       # For each interaction, commit the yml and html along with the correct commit message.
       files.select { |f| f.end_with?('.yml') }.each do |f|
         interaction = git.chdir { YAML.load_file(f) }
