@@ -47,4 +47,19 @@ describe ScrapedPageArchive do
       end
     end
   end
+
+  describe '#git_url' do
+    subject { ScrapedPageArchive::GitStorage.new }
+
+    describe 'in a git repo where origin is an scp-style "URL"' do
+      it 'works as expected' do
+        with_tmp_dir do
+          remote_url = 'git@github.com:everypolitician-scrapers/random-scraper.git'
+          `git init`
+          `git remote add origin #{remote_url}`
+          assert_equal remote_url, subject.send(:git_url)
+        end
+      end
+    end
+  end
 end
