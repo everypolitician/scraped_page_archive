@@ -89,16 +89,35 @@ visit('http://example.com/')
 It should be possible to adapt this to work with other Capybara drivers
 fairly easily.
 
-#### Use with `ScrapedPageArchive.record`
+#### Manually save requests
 
-You can have complete control and record http requests by performing them in a block passed to `ScrapedPageArchive.record`:
+You can manually save http requests by passing a correctly formatted hash to `ScrapedPageArchive.store`:
 
 ```ruby
 require 'scraped_page_archive'
-ScrapedPageArchive.record do
-  response = open('http://example.com/')
-  # Use the response...
-end
+
+archive = ScrapedPageArchive.new(ScrapedPageArchive::GitStorage.new)
+archive.store(
+  request: {
+    method: :get,
+    uri: response.base_uri.to_s,
+  },
+  response: {
+    status: {
+      code: response.status.first.to_i,
+      message: response.status.last,
+    },
+    headers: response.metas,
+    body: {
+      encoding: body.encoding.to_s,
+      string: body,
+    },
+    recorded_at: Time.now,
+  }
+)
+
+# Without this line the changes will only be in the local (temporary!) directory.
+archive.push
 ```
 
 ## Development
