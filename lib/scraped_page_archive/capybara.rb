@@ -54,10 +54,14 @@ module Capybara::Poltergeist
       # we skip these methods because they are called a lot, don't cause the page
       # to change and having record round them slows things down quite a bit.
       return result if %w(tag_name visible property find body set_js_errors current_url status_code response_headers).include?(name)
-      ScrapedPageArchive.record do
+      scraped_page_archive.record do
         save_request(body, get_details(current_url), current_url)
       end
       result
+    end
+
+    def scraped_page_archive
+      @scraped_page_archive ||= ScrapedPageArchive.new(ScrapedPageArchive::GitStorage.new)
     end
   end
 end

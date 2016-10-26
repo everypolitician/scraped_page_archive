@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixes
+
+- Avoid recloning the whole repo for each request by caching the `ScrapedPageArchive` instance in the `open-uri` and `capybara` adapters.
+
 ## [0.4.1] - 2016-08-15
 
 ### Fixes
