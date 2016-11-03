@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2016-11-03
+
 ### Fixes
 
 - Avoid recloning the whole repo for each request by caching the `ScrapedPageArchive` instance in the `open-uri` and `capybara` adapters.
@@ -58,3 +60,4 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [0.3.1]: https://github.com/everypolitician/scraped_page_archive/compare/v0.3.0...v0.3.1
 [0.4.0]: https://github.com/everypolitician/scraped_page_archive/compare/v0.3.1...v0.4.0
 [0.4.1]: https://github.com/everypolitician/scraped_page_archive/compare/v0.4.0...v0.4.1
+[0.5.0]: https://github.com/everypolitician/scraped_page_archive/compare/v0.4.1...v0.5.0
