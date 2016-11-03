@@ -110,6 +110,26 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 Note that this does not install Capybara or any drivers so if you want
 to work on that you will need to do that.
 
+### Releases
+
+After you've added a new feature or fixed a bug you should release the gem to rubygems.org.
+
+#### Before releasing a new version
+
+- [ ] Is your new feature/bugfix documented in [`CHANGELOG.md`](CHANGELOG.md)?
+- [ ] Have added a section for the new version in [`CHANGELOG.md`](CHANGELOG.md)?
+- [ ] Have you updated `ScrapedPage::VERSION` according to [SemVer](http://semver.org/)?
+- [ ] Are all of the changes that you want included in the release on the `master` branch?
+
+#### Releasing a new version
+
+If you wanted to release version `0.42.0`, for example, you would need to run the following commands:
+
+    git tag -a -m "scraped_page_archive v0.42.0" v0.42.0
+    git push origin --tags
+
+Then Travis CI will notice that you've pushed a new tag and will release the new version of the gem.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/everypolitician/scraped_page_archive.
