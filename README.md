@@ -117,8 +117,8 @@ After you've added a new feature or fixed a bug you should release the gem to ru
 #### Before releasing a new version
 
 - [ ] Is your new feature/bugfix documented in [`CHANGELOG.md`](CHANGELOG.md)?
-- [ ] Have you updated `ScrapedPage::VERSION` according to [SemVer](http://semver.org/)?
 - [ ] Have added a section for the new version in [`CHANGELOG.md`](CHANGELOG.md)?
+- [ ] Have you updated `ScrapedPage::VERSION` according to [SemVer](http://semver.org/)?
 - [ ] Are all of the changes that you want included in the release on the `master` branch?
 
 #### Releasing a new version
