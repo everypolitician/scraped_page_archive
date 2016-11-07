@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.5.0] - 2016-11-03
 
-### Changed
+### Changes
 
 - The git storage logic has been pulled into its own class. This means that you need to pass a `ScrapedPageArchive::GitStorage` instance to the `ScrapedPageArchive` constructor if you're using the class directly. See the ["Running on other platforms" section in README.md](README.md#running-on-other-platforms) for more details.
 
