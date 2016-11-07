@@ -7,13 +7,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.5.0] - 2016-11-03
 
-### Fixes
-
-- Avoid recloning the whole repo for each request by caching the `ScrapedPageArchive` instance in the `open-uri` and `capybara` adapters.
-
 ### Changed
 
 - The git storage logic has been pulled into its own class. This means that you need to pass a `ScrapedPageArchive::GitStorage` instance to the `ScrapedPageArchive` constructor if you're using the class directly. See the ["Running on other platforms" section in README.md](README.md#running-on-other-platforms) for more details.
+
+### Fixes
+
+- Avoid recloning the whole repo for each request by caching the `ScrapedPageArchive` instance in the `open-uri` and `capybara` adapters.
 
 ## [0.4.1] - 2016-08-15
 
