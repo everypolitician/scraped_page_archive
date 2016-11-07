@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2016-11-03
+
+### Changes
+
+- The git storage logic has been pulled into its own class. This means that you need to pass a `ScrapedPageArchive::GitStorage` instance to the `ScrapedPageArchive` constructor if you're using the class directly. See the ["Running on other platforms" section in README.md](README.md#running-on-other-platforms) for more details.
+
 ### Fixes
 
 - Avoid recloning the whole repo for each request by caching the `ScrapedPageArchive` instance in the `open-uri` and `capybara` adapters.
@@ -53,3 +59,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [0.3.0]: https://github.com/everypolitician/scraped_page_archive/compare/v0.2.0...v0.3.0
 [0.3.1]: https://github.com/everypolitician/scraped_page_archive/compare/v0.3.0...v0.3.1
 [0.4.0]: https://github.com/everypolitician/scraped_page_archive/compare/v0.3.1...v0.4.0
+[0.4.1]: https://github.com/everypolitician/scraped_page_archive/compare/v0.4.0...v0.4.1
+[0.5.0]: https://github.com/everypolitician/scraped_page_archive/compare/v0.4.1...v0.5.0
