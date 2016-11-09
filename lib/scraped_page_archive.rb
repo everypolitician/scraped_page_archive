@@ -1,5 +1,6 @@
 require 'scraped_page_archive/version'
 require 'scraped_page_archive/git_storage'
+require 'scraped_page_archive/local_git_storage'
 require 'vcr'
 require 'vcr/archive'
 
