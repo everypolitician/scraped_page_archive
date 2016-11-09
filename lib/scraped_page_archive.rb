@@ -58,7 +58,7 @@ class ScrapedPageArchive
   def response_from(meta, response_body)
     StringIO.new(response_body).tap do |response|
       OpenURI::Meta.init(response)
-      meta['response']['headers'].each { |k, v| response.meta_add_field(k, v.join(', ')) }
+      Hash(meta['response']['headers']).each { |k, v| response.meta_add_field(k, v.join(', ')) }
       response.status = meta['response']['status'].values.map(&:to_s)
       response.base_uri = URI.parse(meta['request']['uri'])
     end
