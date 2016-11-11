@@ -21,6 +21,15 @@ class ScrapedPageArchive
       git.chdir(&block)
     end
 
+    def valid?
+      return true unless github_repo_url.nil?
+      warn "The 'scraped_page_archive' gem wants to store the scraped pages in a git repo," \
+        'but it cannot determine which git repo it should use.  See ' \
+        'https://github.com/everypolitician/scraped_page_archive#usage for details of how ' \
+        "to specify the repo.\n\n"
+      false
+    end
+
     # FIXME: This should be refactored so it doesn't have as much knowledge about
     # the locations of files on the filesystem.
     def save

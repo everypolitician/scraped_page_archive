@@ -25,13 +25,7 @@ class ScrapedPageArchive
   end
 
   def record(&block)
-    if storage.github_repo_url.nil?
-      warn "The 'scraped_page_archive' gem wants to store the scraped pages in a git repo," \
-        'but it cannot determine which git repo it should use.  See ' \
-        'https://github.com/everypolitician/scraped_page_archive#usage for details of how ' \
-        "to specify the repo.\n\n"
-      return yield
-    end
+    return yield unless storage.valid?
     VCR::Archive::Persister.storage_location = storage.path
     ret = VCR.use_cassette('', &block)
     storage.save
