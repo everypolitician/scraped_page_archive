@@ -9,7 +9,7 @@ class ScrapedPageArchive
       @github_repo_url = (
         github_repo_url ||
         environment_url ||
-        git_remote_get_url_origin
+        git_remote_origin_url
       )
     end
 
@@ -83,7 +83,7 @@ class ScrapedPageArchive
       end
     end
 
-    def git_remote_get_url_origin
+    def git_remote_origin_url
       remote_url = `git config remote.origin.url`.chomp
       return nil unless $CHILD_STATUS.success?
       remote_url
