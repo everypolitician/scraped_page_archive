@@ -8,8 +8,8 @@ class ScrapedPageArchive
     def initialize(github_repo_url = nil)
       @github_repo_url = (
         github_repo_url ||
-        ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] ||
-        git_remote_get_url_origin
+        environment_url ||
+        git_remote_origin_url
       )
     end
 
@@ -42,6 +42,11 @@ class ScrapedPageArchive
     end
 
     private
+
+    def environment_url
+      return unless ENV.include? 'MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'
+      ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'].chomp
+    end
 
     # TODO: This should be configurable.
     def branch_name
@@ -78,7 +83,7 @@ class ScrapedPageArchive
       end
     end
 
-    def git_remote_get_url_origin
+    def git_remote_origin_url
       remote_url = `git config remote.origin.url`.chomp
       return nil unless $CHILD_STATUS.success?
       remote_url

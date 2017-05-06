@@ -33,5 +33,18 @@ describe ScrapedPageArchive do
         end
       end
     end
+
+    describe 'MORPH_SCRAPER_CACHE_GITHUB_REPO_URL' do
+      let(:remote_url) { "https://github.com/everypolitician-scrapers/estonia-riigikogu\n" }
+
+      it 'chomps any supplied ENV var' do
+        with_tmp_dir do
+          original_env = ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL']
+          ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] = remote_url
+          assert_equal remote_url.chomp, subject.github_repo_url
+          ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] = original_env
+        end
+      end
+    end
   end
 end
