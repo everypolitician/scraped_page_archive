@@ -8,7 +8,7 @@ class ScrapedPageArchive
     def initialize(github_repo_url = nil)
       @github_repo_url = (
         github_repo_url ||
-        ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'] ||
+        environment_url ||
         git_remote_get_url_origin
       )
     end
@@ -42,6 +42,11 @@ class ScrapedPageArchive
     end
 
     private
+
+    def environment_url
+      return unless ENV.include? 'MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'
+      ENV['MORPH_SCRAPER_CACHE_GITHUB_REPO_URL'].chomp
+    end
 
     # TODO: This should be configurable.
     def branch_name
