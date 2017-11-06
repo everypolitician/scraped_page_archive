@@ -77,6 +77,7 @@ class ScrapedPageArchive
 
     def git_url
       @git_url ||= begin
+        return github_repo_url unless ENV.key?('SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN')
         url = URI.parse(github_repo_url)
         url.password = ENV['SCRAPED_PAGE_ARCHIVE_GITHUB_TOKEN']
         url.to_s
